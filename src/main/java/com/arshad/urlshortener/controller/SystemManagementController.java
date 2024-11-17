@@ -17,7 +17,7 @@ public class SystemManagementController {
     }
 
    @ReadOperation
-    public String getTopShortenedUrls() {
+    public String getTopShortenedDomain() {
         return service.getDomainMetrics().stream()
                 .collect(Collectors.joining(System.lineSeparator()));
     }

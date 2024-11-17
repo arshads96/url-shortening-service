@@ -1,3 +1,12 @@
 spring:
   application:
     name: url-shortening-service
+
+management:
+  server:
+    port: 8090
+  endpoints:
+    web:
+      base-path: /metrics
+      exposure:
+        include: top-shortened-urls

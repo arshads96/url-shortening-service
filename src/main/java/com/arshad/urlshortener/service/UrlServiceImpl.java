@@ -1,5 +1,6 @@
 package com.arshad.urlshortener.service;
 
+import com.arshad.urlshortener.contract.UrlRepository;
 import com.arshad.urlshortener.contract.UrlService;
 import com.arshad.urlshortener.exception.ApplicationException;
 import com.arshad.urlshortener.exception.InvalidUrlException;
@@ -18,12 +19,19 @@ public class UrlServiceImpl implements UrlService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UrlServiceImpl.class);
 
+    private final UrlRepository urlRepository;
+
+    public UrlServiceImpl(UrlRepository urlRepository) {
+        this.urlRepository = urlRepository;
+    }
+
     @Override
     public String getShortUrl(ShortenRequest request) {
        if(!validateLongURL(request.getLongUrl())){
            throw new InvalidUrlException("Invalid URL : "+request.getLongUrl());
        }
        String shortUrl = generateShortUrl(request.getLongUrl());
+       urlRepository.saveShortUrl(shortUrl, request.getLongUrl());
        return shortUrl;
     }
 

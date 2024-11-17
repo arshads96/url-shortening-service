@@ -75,6 +75,16 @@
 			<artifactId>jackson-databind-nullable</artifactId>
 			<version>0.2.6</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.26</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -101,7 +111,7 @@
 								<useSpringBoot3>true</useSpringBoot3>
 								<interfaceOnly>true</interfaceOnly>
 							</configOptions>
-							<apiPackage>com.example.urlshortener.api</apiPackage>
+							<apiPackage>com.arshad.urlshortener.api</apiPackage>
 							<modelPackage>com.arshad.urlshortener.model</modelPackage>
 							<invokerPackage>com.arshad.urlshortener.invoker</invokerPackage>
 						</configuration>

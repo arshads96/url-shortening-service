@@ -1,6 +1,7 @@
 package com.arshad.urlshortener.controller;
 
 
+import com.arshad.urlshortener.api.ShortCodeApi;
 import com.arshad.urlshortener.contract.UrlService;
 import com.arshad.urlshortener.mapper.RequestMapper;
 import com.arshad.urlshortener.model.ShortenPost201Response;
@@ -12,9 +13,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.NativeWebRequest;
+
+import java.net.URI;
+import java.util.Optional;
 
 @RestController
-public class UrlController implements ShortenApi {
+public class UrlController implements ShortenApi, ShortCodeApi {
 
     private final RequestMapper requestMapper;
     private final UrlService urlService;
@@ -33,4 +38,14 @@ public class UrlController implements ShortenApi {
         return new ResponseEntity<>(response,HttpStatus.CREATED);
     }
 
+    @Override
+    public Optional<NativeWebRequest> getRequest() {
+        return ShortenApi.super.getRequest();
+    }
+
+    @Override
+    public ResponseEntity<Void> shortCodeGet(String shortCode) {
+        String longUrl = urlService.getLongUrl(shortCode);
+       return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(longUrl)).build();
+    }
 }

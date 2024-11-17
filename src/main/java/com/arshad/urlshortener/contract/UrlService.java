@@ -7,4 +7,6 @@ public interface UrlService {
     String getShortUrl(ShortenRequest request);
 
     boolean validateLongURL(String longURL);
+
+    String getLongUrl(String shortUrl);
 }

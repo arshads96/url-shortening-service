@@ -68,4 +68,11 @@ public class UrlServiceImpl implements UrlService {
 
         return matcher.matches();
     }
+
+    @Override
+    public String getLongUrl(String shortUrl) {
+        return urlRepository.getLongUrl(shortUrl);
+    }
+
+
 }

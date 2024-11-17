@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UrlController implements ShortenApi {
 
-    private RequestMapper requestMapper;
-    private UrlService urlService;
+    private final RequestMapper requestMapper;
+    private final UrlService urlService;
 
     public UrlController(RequestMapper requestMapper, UrlService urlService){
         this.requestMapper = requestMapper;

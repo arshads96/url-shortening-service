@@ -4,7 +4,7 @@ import com.arshad.urlshortener.model.ShortenRequest;
 
 public interface UrlService {
 
-    public String getShortUrl(ShortenRequest request);
+    String getShortUrl(ShortenRequest request);
 
-    public boolean validateLongURL(String longURL);
+    boolean validateLongURL(String longURL);
 }

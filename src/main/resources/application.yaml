@@ -9,4 +9,4 @@ management:
     web:
       base-path: /metrics
       exposure:
-        include: top-shortened-urls
+        include: top-shortened-domains

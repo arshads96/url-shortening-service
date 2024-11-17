@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.stream.Collectors;
 
 @Component
-@Endpoint(id = "top-shortened-urls")
+@Endpoint(id = "top-shortened-domains")
 public class SystemManagementController {
 
     private final UrlService service;

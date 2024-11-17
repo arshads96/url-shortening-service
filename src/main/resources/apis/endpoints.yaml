@@ -1,0 +1,48 @@
+openapi: 3.0.0
+info:
+  title: URL Shortener API
+  version: 1.0.0
+paths:
+  /shorten:
+    post:
+      summary: Create a shortened URL
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                longUrl:
+                  type: string
+                  format: uri
+                  example: "https://example.com/some/long/url"
+      responses:
+        '201':
+          description: Shortened URL created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  shortUrl:
+                    type: string
+                    example: "https://short.ly/abc123"
+        '400':
+          description: Invalid long URL
+
+  /{shortCode}:
+    get:
+      summary: Redirect to the long URL
+      parameters:
+        - name: shortCode
+          in: path
+          required: true
+          description: The unique code for the shortened URL
+          schema:
+            type: string
+      responses:
+        '302':
+          description: Redirect to long URL
+        '404':
+          description: Short code not found

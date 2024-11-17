@@ -9,8 +9,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,7 +36,10 @@ public class UrlServiceImpl implements UrlService {
            throw new InvalidUrlException("Invalid URL : "+request.getLongUrl());
        }
        String shortUrl = generateShortUrl(request.getLongUrl());
-       urlRepository.saveShortUrl(shortUrl, request.getLongUrl());
+       boolean isDataSaved = urlRepository.saveShortUrl(shortUrl, request.getLongUrl());
+       if(isDataSaved){
+           saveDomainMetrics(request.getLongUrl());
+       }
        return shortUrl;
     }
 
@@ -55,8 +63,7 @@ public class UrlServiceImpl implements UrlService {
     }
 
 
-    @Override
-    public boolean validateLongURL(String longURL) {
+    private boolean validateLongURL(String longURL) {
         // Regex pattern for validating a URL
         String regex = "^(https?://)?" + // Optional scheme (http or https)
                 "([a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6})" + // Domain name
@@ -69,9 +76,53 @@ public class UrlServiceImpl implements UrlService {
         return matcher.matches();
     }
 
+    private void saveDomainMetrics(String longUrl) {
+        try{
+            URI uri = new URI(longUrl);
+            String host = uri.getHost();
+
+            if(host != null){
+                String domain = getDomainNameFromHost(host);
+                urlRepository.saveDomainForMetrics(domain);
+            }else{
+                LOGGER.error("Error while saving domain metrics");
+            }
+        } catch (URISyntaxException e) {
+            LOGGER.error("Error while saving domain metrics", e);
+            throw new ApplicationException(e.getMessage());
+        }
+    }
+
+    private String getDomainNameFromHost(String host) {
+        String domain;
+        String[] domainParts = host.split("\\.");
+        if(domainParts.length == 3 && !domainParts[0].equals("www")) {
+            domain = domainParts[0] + "." + domainParts[1];
+        }else if(domainParts.length == 2 && !domainParts[0].equals("www")) {
+            domain = domainParts[0];
+        }else{
+            domain = domainParts[1];
+        }
+        return domain;
+    }
+
     @Override
     public String getLongUrl(String shortUrl) {
         return urlRepository.getLongUrl(shortUrl);
+    }
+
+    @Override
+    public List<String> getDomainMetrics() {
+        Map<String, Integer> domainMetrics = urlRepository.getDomainMetrics();
+        return getTopShortenedDomains(domainMetrics);
+    }
+
+    private List<String> getTopShortenedDomains(Map<String, Integer> domainMetrics) {
+       return  domainMetrics.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .limit(3)
+                .map(entry -> entry.getKey() + " : " + entry.getValue())
+                .toList();
     }
 
 

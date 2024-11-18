@@ -2,9 +2,13 @@ spring:
   application:
     name: url-shortening-service
 
+server:
+  error:
+    include-message: always
+
 management:
   server:
-    port: 8090
+    port: 8080
   endpoints:
     web:
       base-path: /metrics

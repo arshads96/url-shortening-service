@@ -13,8 +13,7 @@ APIs:
 
 Ports:
 
-    1. 8080 for API
-    2. 8090 for metrics
+    1. 8080 for API and metrics
 
 Assumptions/pre-requisites:
 

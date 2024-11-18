@@ -1,78 +1,56 @@
 package com.arshad.urlshortener;
 
+import com.arshad.urlshortener.contract.UrlRepository;
 import com.arshad.urlshortener.contract.UrlService;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ManagementEndpointsTest {
+class ManagementEndpointsTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
+    @MockBean
     UrlService urlService;
 
-
-    void testManagementEndpoints() throws Exception {
-
-        List<String> domainMetrics = Arrays.asList("google : 3", "yahoo : 2", "bing : 1");
-        Mockito.when(urlService.getDomainMetrics()).thenReturn(domainMetrics);
-        String outputMetric = mockMvc.perform(get("http://localhost:8090/metrics/top-shortened-domains")).andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
-        assert outputMetric.contains("google : 3");
-        assert outputMetric.contains("yahoo : 2");
-        assert outputMetric.contains("bing : 1");
-
-    }
+    @MockBean
+    UrlRepository urlRepository;
 
 
+    @Test
     void testManagementEndpoints2() throws Exception {
-        String url1 = "http://www.google.com/";
-        String url2 = "http://www.yahoo.com/";
-        String url3 = "http://www.bing.com/";
-        String url4 = "http://www.yahoo.in/";
-        String url5 = "http://google.in/";
-        String url6 = "http://www.google.us/test";
+        Map<String, Integer> mockResponse = new HashMap<>();
+        mockResponse.put("google", 10);
+        mockResponse.put("yahoo", 5);
+        mockResponse.put("hotmail", 2);
+        mockResponse.put("msn", 1);
 
-        mockMvc.perform(post("/shorten").contentType("application/json").content("{\"longUrl\":\"" + url1 + "\"}"))
-                .andExpect(status().isCreated());
+        List<String> mockList = Arrays.asList("google : 10", "yahoo : 5", "hotmail : 2");
 
-        mockMvc.perform(post("/shorten").contentType("application/json").content("{\"longUrl\":\"" + url2 + "\"}"))
-                .andExpect(status().isCreated());
+        when(urlRepository.getDomainMetrics()).thenReturn(mockResponse);
+        when(urlService.getDomainMetrics()).thenReturn(mockList);
 
-        mockMvc.perform(post("/shorten").contentType("application/json").content("{\"longUrl\":\"" + url3 + "\"}"))
-                .andExpect(status().isCreated());
-
-        mockMvc.perform(post("/shorten").contentType("application/json").content("{\"longUrl\":\"" + url4 + "\"}"))
-                .andExpect(status().isCreated());
-
-        mockMvc.perform(post("/shorten").contentType("application/json").content("{\"longUrl\":\"" + url5 + "\"}"))
-                .andExpect(status().isCreated());
-
-        mockMvc.perform(post("/shorten").contentType("application/json").content("{\"longUrl\":\"" + url6 + "\"}"))
-                .andExpect(status().isCreated());
-
-        String outputMetric =mockMvc.perform(get("http://localhost:8090/metrics/top-shortened-domains")).andExpect(status().isOk())
+        String response = mockMvc.perform(get("/metrics/top-shortened-domains")).andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
-        assert outputMetric.contains("google : 3");
-        assert outputMetric.contains("yahoo : 2");
-        assert outputMetric.contains("bing : 1");
-
-
+        assert response.contains("google : 10");
+        assert response.contains("yahoo : 5");
+        assert response.contains("hotmail : 2");
 
 
     }

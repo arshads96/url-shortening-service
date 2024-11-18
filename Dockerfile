@@ -1,8 +1,10 @@
 FROM openjdk:17-jdk-slim
 
-MAINTAINER arshad
+LABEL org.opencontainers.image.authors="arshad"
 
-RUN apt-get update && apt-get install -y curl
+RUN apt-get update \
+    && apt-get install -y curl \
+    && apt-get clean
 
 COPY target/url-shortening-service-1.1-SNAPSHOT.jar url-shortening-service.jar
 

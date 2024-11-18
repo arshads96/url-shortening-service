@@ -1,0 +1,55 @@
+{
+	"info": {
+		"_postman_id": "8b7ccbc0-ae3a-45f0-9e0e-e383025eab01",
+		"name": "URLShorteningService",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7497410",
+		"_collection_link": "https://syntechsolutions.postman.co/workspace/Syntech-Solutions~db30ea90-b9a4-4830-84d6-98d890d8fe28/collection/7497410-8b7ccbc0-ae3a-45f0-9e0e-e383025eab01?action=share&source=collection_link&creator=7497410"
+	},
+	"item": [
+		{
+			"name": "shorten",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"longUrl\": \"https://google.in/arshads96/test/adfgd\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/shorten",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shorten"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "metrics",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "fetch",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}

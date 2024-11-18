@@ -10,6 +10,7 @@ APIs:
     1. Create short url  ("/shorten")
     2. Redirect to long url using short code ("/{shortCode}")
     3. Management ports for metrics ("/metrics/top-shortened-domains")
+    4. Use the postman collection present in code for accessing the apis ("url-shortening-service.postman_collection.json")
 
 Ports:
 

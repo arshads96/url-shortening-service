@@ -16,7 +16,8 @@ Ports:
     1. 8080 for API
     2. 8090 for metrics
 
--> Assumptions/pre-requisites
+Assumptions/pre-requisites:
+
     1. Docker installed on machine
     2. Postman
     3. Java 17 or above

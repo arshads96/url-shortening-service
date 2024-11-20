@@ -35,7 +35,7 @@ public class UrlController implements ShortenApi, ShortCodeApi {
         String shortUrl = urlService.getShortUrl(request);
         ShortenPost201Response response = new ShortenPost201Response();
         response.setShortUrl("http://localhost:8080/"+shortUrl);
-        return new ResponseEntity<>(response,HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @Override

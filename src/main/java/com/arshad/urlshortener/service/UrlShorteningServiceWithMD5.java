@@ -20,13 +20,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
-public class UrlServiceImpl implements UrlService {
+public class UrlShorteningServiceWithMD5 implements UrlService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UrlServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UrlShorteningServiceWithMD5.class);
 
     private final UrlRepository urlRepository;
 
-    public UrlServiceImpl(UrlRepository urlRepository) {
+    public UrlShorteningServiceWithMD5(UrlRepository urlRepository) {
         this.urlRepository = urlRepository;
     }
 
@@ -63,6 +63,20 @@ public class UrlServiceImpl implements UrlService {
     }
 
 
+
+    /**
+     * Validate a given long URL against a regex pattern.
+     *
+     * The pattern will allow for the following:
+     * - An optional scheme (http or https)
+     * - A required domain name
+     * - An optional port number
+     * - An optional path
+     *
+     * @param longURL The URL to be validated.
+     *
+     * @return true if the URL is valid, false otherwise.
+     */
     private boolean validateLongURL(String longURL) {
         // Regex pattern for validating a URL
         String regex = "^(https?://)?" + // Optional scheme (http or https)
@@ -93,6 +107,18 @@ public class UrlServiceImpl implements UrlService {
         }
     }
 
+    /**
+     * This method takes a host string and returns the domain name.
+     * A domain name is a string which is the first part of a host string
+     * up to the first dot (.) or the second last part of a host string
+     * if the host string has three parts and the first part is not "www".
+     * For example, if the host string is "example.com", the domain name
+     * is "example". If the host string is "sub.example.com", the domain
+     * name is "sub.example". If the host string is "www.example.com",
+     * the domain name is "example".
+     * @param host The host string
+     * @return The domain name
+     */
     private String getDomainNameFromHost(String host) {
         String domain;
         String[] domainParts = host.split("\\.");

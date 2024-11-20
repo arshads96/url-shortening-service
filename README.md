@@ -4,6 +4,12 @@
 About the project
 
 This project is a Spring Boot application for shortening long urls.
+This project has 2 algorithms for shortening long urls:
+
+    1. MD5
+    2. SHA-256
+
+SHA-256 is the default algorithm for shortening long urls as the hash collisions are less using SHA-256 than MD5.
 
 APIs:
 
@@ -11,6 +17,9 @@ APIs:
     2. Redirect to long url using short code ("/{shortCode}")
     3. Management ports for metrics ("/metrics/top-shortened-domains")
     4. Use the postman collection present in code for accessing the apis ("url-shortening-service.postman_collection.json")
+
+endpoints.yaml file is present in src/main/resources/apis folder. 
+Can be used for reading the REST contracts.
 
 Ports:
 

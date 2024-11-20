@@ -61,7 +61,6 @@ public class UrlShorteningServiceWithSHA256 implements UrlService {
 
     /**
      * Validate a given long URL against a regex pattern.
-     *
      * The pattern will allow for the following:
      * - An optional scheme (http or https)
      * - A required domain name
@@ -97,7 +96,7 @@ public class UrlShorteningServiceWithSHA256 implements UrlService {
                 }
                 hexString.append(hex);
             }
-            return hexString.toString().substring(0,6);
+            return hexString.substring(0,6);
         } catch (NoSuchAlgorithmException e) {
             LOGGER.error("Error while generating short url", e);
             throw new ApplicationException(e.getMessage());
